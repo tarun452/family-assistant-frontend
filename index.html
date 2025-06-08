@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Family Assistant Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="login-box">
+    <h2>👋 Welcome to Your Family Assistant</h2>
+    <p>Enter your name to continue:</p>
+    <input type="text" id="nameInput" placeholder="Your name..." />
+    <br>
+    <button id="submitButton" onclick="login()">Enter</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const input = document.getElementById('nameInput');
+      const button = document.getElementById('submitButton');
+
+      button.disabled = true;
+
+      input.addEventListener('input', () => {
+        button.disabled = input.value.trim() === '';
+      });
+
+      input.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter' && !button.disabled) {
+          login();
+        }
+      });
+    });
+
+    function login() {
+      const name = document.getElementById('nameInput').value.trim();
+      localStorage.setItem('name', name);
+      window.location.href = "chat.html";
+    }
+  </script>
+</body>
+</html>

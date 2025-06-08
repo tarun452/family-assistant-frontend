@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Family Assistant Chat</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="chat-container">
+    <div class="top-bar">
+      <span>👋 Hello, <b id="username"></b></span>
+      <button id="logoutButton">Logout</button>
+    </div>
+    <div id="chatBox"></div>
+    <div style="display: flex; margin-top: 10px;">
+      <input type="text" id="messageInput" placeholder="Type a message..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
