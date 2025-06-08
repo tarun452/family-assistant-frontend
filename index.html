@@ -15,28 +15,37 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const input = document.getElementById('nameInput');
-      const button = document.getElementById('submitButton');
+  document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('nameInput');
+    const button = document.getElementById('submitButton');
 
-      button.disabled = true;
+    // Initially disable button
+    button.disabled = true;
 
-      input.addEventListener('input', () => {
-        button.disabled = input.value.trim() === '';
-      });
-
-      input.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter' && !button.disabled) {
-          login();
-        }
-      });
+    // Enable button only if input has text
+    input.addEventListener('input', () => {
+      if (input.value.trim().length > 0) {
+        button.disabled = false;
+      } else {
+        button.disabled = true;
+      }
     });
 
-    function login() {
-      const name = document.getElementById('nameInput').value.trim();
+    // Support Enter key when button is enabled
+    input.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter' && !button.disabled) {
+        login();
+      }
+    });
+  });
+
+  function login() {
+    const name = document.getElementById('nameInput').value.trim();
+    if (name) {
       localStorage.setItem('name', name);
       window.location.href = "chat.html";
     }
-  </script>
+  }
+</script>
 </body>
 </html>
