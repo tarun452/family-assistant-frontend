@@ -14,7 +14,9 @@ function sendMessage() {
     fetch('https://family-assistant-backend.onrender.com/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: message })
+        body: JSON.stringify({ 
+            message: message,
+            session_id: localStorage.getItem('name') || 'default_session' })
     })
     .then(response => response.json())
     .then(data => {
