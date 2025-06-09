@@ -1,44 +1,45 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Family Assistant Login</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Assistant - Login</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="login-box">
-    <h2>👋 Welcome to Your Family Assistant</h2>
-    <p>Enter your name to continue:</p>
-    <input type="text" id="nameInput" placeholder="Your name..." />
-    <br>
-    <button id="submitButton" disabled>Enter</button>
-  </div>
+    <div class="login-container">
+        <h2>👋 Welcome to Your Family Assistant</h2>
+        <p>Enter your name to continue:</p>
+        <input type="text" id="nameInput" placeholder="Your name..." />
+        <button id="enterButton" disabled>Enter</button>
+    </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const input = document.getElementById('nameInput');
-      const button = document.getElementById('submitButton');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('nameInput');
+            const enterButton = document.getElementById('enterButton');
 
-      button.disabled = true;  // Start disabled
+            // Initially disable the button
+            enterButton.disabled = true;
 
-      input.addEventListener('input', () => {
-        button.disabled = input.value.trim() === ''; // Enable only if name entered
-      });
+            // Enable button if there is text
+            nameInput.addEventListener('input', function() {
+                if (nameInput.value.trim() !== '') {
+                    enterButton.disabled = false;
+                } else {
+                    enterButton.disabled = true;
+                }
+            });
 
-      input.addEventListener('keypress', function (event) {
-        if (event.key === 'Enter' && !button.disabled) {
-          event.preventDefault();
-          login();
-        }
-      });
-    });
-
-    function login() {
-      const name = document.getElementById('nameInput').value.trim();
-      localStorage.setItem('name', name);
-      window.location.href = "chat.html";
-    }
-  </script>
+            // Handle enter button click
+            enterButton.addEventListener('click', function() {
+                const name = nameInput.value.trim();
+                if (name) {
+                    localStorage.setItem('name', name); // Store in local storage
+                    window.location.href = 'chat.html'; // Redirect to chat page
+                }
+            });
+        });
+    </script>
 </body>
 </html>
