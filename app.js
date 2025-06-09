@@ -1,5 +1,27 @@
 const backendUrl = 'https://family-assistant-backend.onrender.com';
 
+async function loadChatHistory() {
+    const userId = localStorage.getItem('name') || 'default_user';
+    const chatBox = document.getElementById('chatBox');
+
+    try {
+        const response = await fetch(`${backendUrl}/history/${userId}`);
+        const messages = await response.json();
+
+        if (messages && messages.length > 0) {
+            messages.forEach(msg => {
+                if (msg.role === 'user') {
+                    chatBox.innerHTML += `<div><b>You:</b> ${msg.content}</div>`;
+                } else if (msg.role === 'assistant') {
+                    chatBox.innerHTML += `<div><b>Bot:</b> ${msg.content}</div>`;
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Error loading chat history:', error);
+    }
+}
+
 function showTypingIndicator() {
     const typingIndicator = document.getElementById('typing-indicator');
     typingIndicator.style.display = 'flex';
@@ -64,4 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('name');
         window.location.href = "index.html";
     });
+
+    //  Load old chat history on page load
+    loadChatHistory();
 });
