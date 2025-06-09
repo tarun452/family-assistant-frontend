@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +12,7 @@
     <p>Enter your name to continue:</p>
     <input type="text" id="nameInput" placeholder="Your name..." />
     <br>
-    <button id="submitButton" onclick="login()">Enter</button>
+    <button id="submitButton" disabled>Enter</button>
   </div>
 
   <script>
@@ -19,14 +20,15 @@
       const input = document.getElementById('nameInput');
       const button = document.getElementById('submitButton');
 
-      button.disabled = true;
+      button.disabled = true;  // Start disabled
 
       input.addEventListener('input', () => {
-        button.disabled = input.value.trim() === '';
+        button.disabled = input.value.trim() === ''; // Enable only if name entered
       });
 
-      input.addEventListener('keypress', function(event) {
+      input.addEventListener('keypress', function (event) {
         if (event.key === 'Enter' && !button.disabled) {
+          event.preventDefault();
           login();
         }
       });
