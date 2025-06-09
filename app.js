@@ -1,109 +1,96 @@
-
 const backendUrl = 'https://family-assistant-backend.onrender.com';
 
 async function loadChatHistory() {
-    const userId = localStorage.getItem('name');
-    if (!userId) return;
-
+    const userId = localStorage.getItem('name') || 'default_user';
     const chatBox = document.getElementById('chatBox');
+    chatBox.innerHTML = '';  // Clear previous chat
 
     try {
         const response = await fetch(`${backendUrl}/history/${userId}`);
         const messages = await response.json();
 
-        if (messages && messages.length > 0) {
-            messages.forEach(msg => appendMessage(msg.role, msg.content));
+        if (messages && Array.isArray(messages)) {
+            messages.forEach(msg => {
+                const sender = msg.role === 'user' ? 'You' : 'Bot';
+                chatBox.innerHTML += `<div><b>${sender}:</b> ${msg.content}</div>`;
+            });
         }
     } catch (error) {
         console.error('Error loading chat history:', error);
     }
 }
 
-function appendMessage(role, content) {
-    const chatBox = document.getElementById('chatBox');
-    const div = document.createElement('div');
-    div.innerHTML = `<b>${role === 'user' ? 'You' : 'Bot'}:</b> ${content}`;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
 function showTypingIndicator() {
-    document.getElementById('typing-indicator').style.display = 'flex';
+    const indicator = document.getElementById('typing-indicator');
+    if (indicator) indicator.style.display = 'block';
 }
 
 function hideTypingIndicator() {
-    document.getElementById('typing-indicator').style.display = 'none';
+    const indicator = document.getElementById('typing-indicator');
+    if (indicator) indicator.style.display = 'none';
 }
 
 async function sendMessage() {
     const messageInput = document.getElementById('messageInput');
+    const chatBox = document.getElementById('chatBox');
     const message = messageInput.value.trim();
+    const userId = localStorage.getItem('name') || 'default_user';
 
-    if (message === '') return;
+    if (!message) return;
 
-    const userId = localStorage.getItem('name');
-    if (!userId) {
-        alert('Please log in again.');
-        window.location.href = 'index.html';
-        return;
-    }
-
-    appendMessage('user', message);
+    chatBox.innerHTML += `<div><b>You:</b> ${message}</div>`;
+    messageInput.value = '';
     showTypingIndicator();
 
     try {
         const response = await fetch(`${backendUrl}/chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message, user_id: userId })
+            body: JSON.stringify({ 
+                message: message,
+                user_id: userId
+            })
         });
 
         const data = await response.json();
         hideTypingIndicator();
 
-        if (data.response) {
-            appendMessage('assistant', data.response);
+        if (data && data.response) {
+            chatBox.innerHTML += `<div><b>Bot:</b> ${data.response}</div>`;
         } else {
-            appendMessage('assistant', 'Sorry, no response received.');
+            chatBox.innerHTML += `<div><b>Bot:</b> Sorry, no response received.</div>`;
         }
+
     } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
         hideTypingIndicator();
-        appendMessage('assistant', 'Sorry, something went wrong.');
+        chatBox.innerHTML += `<div><b>Bot:</b> Sorry, something went wrong.</div>`;
     }
-
-    messageInput.value = '';
-    updateSendButtonState();
-}
-
-function updateSendButtonState() {
-    const messageInput = document.getElementById('messageInput');
-    const sendButton = document.getElementById('sendButton');
-    sendButton.disabled = messageInput.value.trim() === '';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const name = localStorage.getItem('name');
-    document.getElementById('username').textContent = name || 'Guest';
-
+    const usernameSpan = document.getElementById('username');
     const messageInput = document.getElementById('messageInput');
-    const sendButton = document.getElementById('sendButton');
+    const logoutButton = document.getElementById('logoutButton');
 
-    messageInput.addEventListener('input', updateSendButtonState);
-
-    messageInput.addEventListener('keypress', function (event) {
-        if (event.key === 'Enter' && !sendButton.disabled) {
-            event.preventDefault();
-            sendMessage();
-        }
-    });
-
-    sendButton.addEventListener('click', sendMessage);
-
-    document.getElementById('logoutButton').addEventListener('click', function () {
-        localStorage.removeItem('name');
-        window.location.href = 'index.html';
-    });
+    if (usernameSpan) usernameSpan.textContent = name || 'Guest';
 
     loadChatHistory();
+
+    if (messageInput) {
+        messageInput.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+    }
+
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('name');
+            window.location.href = 'index.html';
+        });
+    }
 });
