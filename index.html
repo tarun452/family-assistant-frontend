@@ -1,29 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Login - Family Assistant</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Family Assistant</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
     <div class="container">
-        <h2>Welcome to Family Assistant</h2>
-        <input type="text" id="nameInput" placeholder="Enter your name" />
-        <button id="submitButton" disabled>Submit</button>
+        <div id="chatBox" class="chat-box"></div>
+        <input id="messageInput" placeholder="Type your message..." />
+        <button id="sendButton" disabled>Send</button>
+        <button id="logoutButton">Logout</button>
+        <div id="typing-indicator" class="typing">Bot is typing...</div>
     </div>
-    <script>
-        const nameInput = document.getElementById('nameInput');
-        const submitButton = document.getElementById('submitButton');
-
-        nameInput.addEventListener('input', () => {
-            submitButton.disabled = nameInput.value.trim() === '';
-        });
-
-        submitButton.addEventListener('click', () => {
-            localStorage.setItem('name', nameInput.value.trim());
-            window.location.href = "chat.html";
-        });
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
