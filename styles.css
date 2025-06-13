@@ -1,25 +1,59 @@
 
 body {
-    background-image: url('background.jpg');
-    background-size: cover;
     margin: 0;
-    font-family: Arial, sans-serif;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: url('background.jpg') no-repeat center center fixed;
+    background-size: cover;
 }
 .container {
-    max-width: 500px;
-    margin: auto;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+.login-box {
     background: white;
-    padding: 20px;
-    margin-top: 100px;
+    padding: 2rem;
     border-radius: 10px;
+    box-shadow: 0 0 10px #aaa;
+    text-align: center;
+}
+.chat-container {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    margin: 3rem auto;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+}
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
 }
 .chat-box {
+    border: 1px solid #ccc;
+    border-radius: 4px;
     height: 300px;
     overflow-y: auto;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
+    margin: 1rem 0;
+    padding: 0.5rem;
+    background-color: #f9f9f9;
 }
-.typing {
+.chat-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+.chat-controls input {
+    flex: 1;
+    padding: 0.5rem;
+}
+.typing-indicator {
     font-style: italic;
-    color: gray;
+    font-size: 0.9rem;
+    color: #666;
+    display: none;
 }
