@@ -1,44 +1,28 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Family Assistant - Login</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Login - Family Assistant</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="login-container">
-        <h2>👋 Welcome to Your Family Assistant</h2>
-        <p>Enter your name to continue:</p>
-        <input type="text" id="nameInput" placeholder="Your name..." />
-        <button id="enterButton" disabled>Enter</button>
+    <div class="container">
+        <h2>Welcome to Family Assistant</h2>
+        <input type="text" id="nameInput" placeholder="Enter your name" />
+        <button id="submitButton" disabled>Submit</button>
     </div>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const nameInput = document.getElementById('nameInput');
-            const enterButton = document.getElementById('enterButton');
+        const nameInput = document.getElementById('nameInput');
+        const submitButton = document.getElementById('submitButton');
 
-            // Initially disable the button
-            enterButton.disabled = true;
+        nameInput.addEventListener('input', () => {
+            submitButton.disabled = nameInput.value.trim() === '';
+        });
 
-            // Enable button if there is text
-            nameInput.addEventListener('input', function() {
-                if (nameInput.value.trim() !== '') {
-                    enterButton.disabled = false;
-                } else {
-                    enterButton.disabled = true;
-                }
-            });
-
-            // Handle enter button click
-            enterButton.addEventListener('click', function() {
-                const name = nameInput.value.trim();
-                if (name) {
-                    localStorage.setItem('name', name); // Store in local storage
-                    window.location.href = 'chat.html'; // Redirect to chat page
-                }
-            });
+        submitButton.addEventListener('click', () => {
+            localStorage.setItem('name', nameInput.value.trim());
+            window.location.href = "chat.html";
         });
     </script>
 </body>

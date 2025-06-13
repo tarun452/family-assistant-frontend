@@ -2,25 +2,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Family Assistant Chat</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <title>Family Assistant Chat</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="chat-container">
-    <div class="top-bar">
-      <span>👋 Hello, <b id="username"></b></span>
-      <button id="logoutButton">Logout</button>
+    <div class="container">
+        <h2>Hello, <span id="username"></span></h2>
+        <div id="chatBox" class="chat-box"></div>
+        <div id="typing-indicator" style="display:none;">Bot is typing...</div>
+        <input type="text" id="messageInput" placeholder="Type a message" />
+        <button id="sendButton" disabled>Send</button>
+        <button id="logoutButton">Logout</button>
     </div>
-    <div id="chatBox"></div>
-    <div id="typing-indicator" style="display:none;">Bot is typing...</div>
-      <span></span><span></span><span></span>
-    </div>
-    <div style="display: flex; margin-top: 10px;">
-      <input type="text" id="messageInput" placeholder="Type a message..." />
-      <button id="sendButton" disabled>Send</button>
-    </div>
-  </div>
-  <script src="app.js"></script>
+    <script>
+        const name = localStorage.getItem('name') || 'Guest';
+        document.getElementById('username').textContent = name;
+
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+
+        messageInput.addEventListener('input', () => {
+            sendButton.disabled = messageInput.value.trim() === '';
+        });
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && messageInput.value.trim() !== '') {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        sendButton.addEventListener('click', sendMessage);
+
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            localStorage.removeItem('name');
+            window.location.href = "index.html";
+        });
+
+        function sendMessage() {
+            // This function should be completed with your backend integration
+        }
+    </script>
 </body>
 </html>
